@@ -4,9 +4,13 @@
 #include "../scenegraph.h"
 
 
-struct sg_script_t : public sg_object_t {
+struct node_script_t : public sg_object_t {
 
-  static const uint32_t TYPE = node_type_script_t;
+  node_script_t()
+    : sg_object_t(RTTI) {
+  }
+
+  static gc_rtti_t RTTI;
 
   virtual void run() = 0;
 };

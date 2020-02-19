@@ -4,9 +4,9 @@
 #include "../scenegraph.h"
 
 
-struct node_sprite_t : public sg_object_t {
+struct node_tilemap_t : public sg_object_t {
 
-  node_sprite_t()
+  node_tilemap_t()
     : sg_object_t(RTTI) {
   }
 

@@ -4,26 +4,54 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <bitset>
 
 
 struct gc_object_t;
-
 
 typedef void (*gc_enumerate_t)(
   const gc_object_t *,
   std::vector<const gc_object_t *> &);
 
+struct gc_rtti_t {
+
+  gc_rtti_t(const gc_rtti_t &p, uint32_t t)
+    : parent(&p)
+    , type(t)
+  {}
+
+  gc_rtti_t(uint32_t t)
+    : parent(nullptr)
+    , type(t)
+  {}
+
+  bool is_a(uint32_t t) const {
+    const gc_rtti_t *r = this;
+    for (; r; r = r->parent) {
+      if (r->type == t) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const gc_rtti_t *parent;
+  uint32_t type;
+};
 
 struct gc_object_t {
-  gc_object_t(uint32_t t)
-    : type(t) {
-  }
+
+  typedef const uint8_t * const type_list_t;
+
+  gc_object_t(const gc_rtti_t &r)
+    : rtti(r)
+  {}
 
   virtual ~gc_object_t() = default;
 
   template <typename type_t>
   bool is_a() const {
-    return type == type_t::TYPE;
+    return rtti.is_a(type_t::RTTI.type);
   }
 
   template <typename type_t>
@@ -36,9 +64,8 @@ struct gc_object_t {
     return is_a<type_t>() ? (const type_t*)this : nullptr;
   }
 
-  const uint32_t type;
+  const gc_rtti_t &rtti;
 };
-
 
 struct gc_t {
 
@@ -46,7 +73,9 @@ struct gc_t {
     // check allocation derives from gc_object_t
     static_assert(std::is_base_of<gc_object_t, T>::value,
                   "type must derive from gc_object_t");
-    assert(0 != enums_.count(T::TYPE) && "GC enumrtator not defined");
+#if 0
+    assert(0 != enums_.count(T::RTTI.type) && "GC enumrtator not defined");
+#endif
     // perform the allocation and call constructor
     T *obj = new T(std::forward<Types>(args)...);
     // add to 'allocated' list
@@ -67,9 +96,13 @@ struct gc_t {
           // mark it
           marked_.insert(obj);
           // enumerate its children
-          auto itt = enums_.find(obj->type);
+          auto itt = enums_.find(obj->rtti.type);
+#if 0
           assert(itt != enums_.end());
-          itt->second(obj, pending_);
+#endif
+          if (itt != enums_.end()) {
+            itt->second(obj, pending_);
+          }
         }
       }
     }

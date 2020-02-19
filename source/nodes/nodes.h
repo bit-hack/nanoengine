@@ -1,11 +1,12 @@
 #pragma once
 
 enum {
-    node_type_script,
-    node_type_sprite,
-    node_type_null,
-};
+  node_type_object,
 
-struct node_null_t;
-struct node_script_t;
-struct node_sprite_t;
+  node_type_script,
+  node_type_sprite,
+  node_type_null,
+  node_type_tilemap,
+
+  _NODE_COUNT_
+};

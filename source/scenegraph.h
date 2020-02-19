@@ -3,19 +3,20 @@
 #include <string>
 
 #include "gc.h"
+#include "nodes/nodes.h"
 
 
 struct sg_object_t : public gc_object_t {
 
-  sg_object_t(uint32_t type)
-    : gc_object_t(type)
+  sg_object_t(const gc_rtti_t &r)
+    : gc_object_t(r)
     , enable(true)
     , parent(nullptr)
   {
   }
 
-  sg_object_t(uint32_t type, const std::string &n)
-    : sg_object_t(type) {
+  sg_object_t(const gc_rtti_t &r, const std::string &n)
+    : sg_object_t(r) {
     name = n;
   }
 
@@ -60,6 +61,8 @@ struct sg_object_t : public gc_object_t {
   sg_object_t *owner() {
     return parent;
   }
+
+  static gc_rtti_t RTTI;
 
 protected:
   sg_object_t *parent;

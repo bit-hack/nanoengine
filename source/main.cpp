@@ -1,6 +1,8 @@
 #include "engine.h"
 #include "nodes/nodes.h"
 
+#include "nodes/node_sprite.h"
+
 
 int main(int argc, char **args) {
 
@@ -10,7 +12,12 @@ int main(int argc, char **args) {
     return 1;
   }
 
-  engine.tick();
+  auto & gc = engine.gc();
+  engine.scenegraph().root = gc.alloc<node_sprite_t>();
+
+  while (engine.is_active()) {
+    engine.tick();
+  }
 
   return 0;
 }
