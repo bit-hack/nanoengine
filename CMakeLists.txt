@@ -8,4 +8,11 @@ file(GLOB SOURCE
     "source/nodes/*.h"
     )
 
-add_executable(nanoengine ${SOURCE})
+add_library(lib_nanoengine ${SOURCE})
+
+file(GLOB TESTS
+    "tests/main.cpp"
+    )
+
+add_executable(test_nanoengine ${TESTS})
+target_link_libraries(test_nanoengine lib_nanoengine)

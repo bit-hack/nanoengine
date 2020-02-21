@@ -48,7 +48,7 @@ struct sg_object_t : public gc_object_t {
 
   // garbage collection enumeration
   static void enumerate(
-    const sg_object_t *,
+    const gc_object_t *,
     std::vector<const gc_object_t *> &);
 
   // return the children

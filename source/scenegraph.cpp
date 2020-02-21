@@ -53,10 +53,12 @@ size_t sg_object_t::child_count() const {
 }
 
 void sg_object_t::enumerate(
-  const sg_object_t *obj,
+  const gc_object_t *obj,
   std::vector<const gc_object_t *> &pending) {
   assert(obj);
-  for (const sg_object_t *c : obj->child) {
+
+  const sg_object_t *o = obj->cast<sg_object_t>();
+  for (const sg_object_t *c : o->child) {
     pending.push_back(c);
   }
 }

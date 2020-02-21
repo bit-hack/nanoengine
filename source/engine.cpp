@@ -7,14 +7,11 @@
 
 void engine_visitor_t::on_object(sg_object_t *obj) {
   switch (obj->rtti.type) {
-  case node_type_null:
-    on_node_type_null(obj); break;
-  case node_type_script:
-    on_node_type_script(obj); break;
-  case node_type_sprite:
-    on_node_type_sprite(obj); break;
-  case node_type_tilemap:
-    on_node_type_tilemap(obj); break;
+  case node_type_null:    on_node_type_null(obj);    break;
+  case node_type_script:  on_node_type_script(obj);  break;
+  case node_type_sprite:  on_node_type_sprite(obj);  break;
+  case node_type_tilemap: on_node_type_tilemap(obj); break;
+  case node_type_aabb:    on_node_type_aabb(obj);    break;
   default:
     assert(!"unknown node type");
   }
@@ -37,12 +34,17 @@ void engine_visitor_t::on_node_type_tilemap(sg_object_t *obj) {
   // TODO
 }
 
+void engine_visitor_t::on_node_type_aabb(sg_object_t *obj) {
+  // TODO
+}
+
 engine_t::engine_t()
   : active(false)
 {}
 
 bool engine_t::init() {
   gc_.reset(new gc_t);
+  node_gc_init(*gc_);
   scenegraph_.reset(new sg_scenegraph_t);
   active = true;
   return true;

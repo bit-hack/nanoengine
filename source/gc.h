@@ -73,7 +73,7 @@ struct gc_t {
     // check allocation derives from gc_object_t
     static_assert(std::is_base_of<gc_object_t, T>::value,
                   "type must derive from gc_object_t");
-#if 0
+#if 1
     assert(0 != enums_.count(T::RTTI.type) && "GC enumrtator not defined");
 #endif
     // perform the allocation and call constructor
@@ -97,7 +97,7 @@ struct gc_t {
           marked_.insert(obj);
           // enumerate its children
           auto itt = enums_.find(obj->rtti.type);
-#if 0
+#if 1
           assert(itt != enums_.end());
 #endif
           if (itt != enums_.end()) {

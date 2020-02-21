@@ -10,10 +10,11 @@ struct engine_visitor_t: public sg_visitor_t<engine_visitor_t> {
   void on_object(sg_object_t *obj);
 
   // delegate methods
-  void on_node_type_null(sg_object_t *obj);
-  void on_node_type_script(sg_object_t *obj);
-  void on_node_type_sprite(sg_object_t *obj);
+  void on_node_type_null   (sg_object_t *obj);
+  void on_node_type_script (sg_object_t *obj);
+  void on_node_type_sprite (sg_object_t *obj);
   void on_node_type_tilemap(sg_object_t *obj);
+  void on_node_type_aabb   (sg_object_t *obj);
 };
 
 struct engine_t {
@@ -34,6 +35,10 @@ struct engine_t {
 
   bool is_active() const {
     return active;
+  }
+
+  void stop() {
+    active = false;
   }
 
 protected:

@@ -1,7 +1,6 @@
-#include "engine.h"
-#include "nodes/nodes.h"
-
-#include "nodes/node_sprite.h"
+#include "../source/engine.h"
+#include "../source/nodes/nodes.h"
+#include "../source/nodes/node_sprite.h"
 
 
 int main(int argc, char **args) {
@@ -14,6 +13,8 @@ int main(int argc, char **args) {
 
   auto & gc = engine.gc();
   engine.scenegraph().root = gc.alloc<node_sprite_t>();
+
+  assert(engine.scenegraph().root->is_a<node_sprite_t>());
 
   while (engine.is_active()) {
     engine.tick();
